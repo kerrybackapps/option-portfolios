@@ -54,35 +54,61 @@ class Option(list):
         )
         return fig
 
-# Sidebar controls
-with st.sidebar:
-    # Cash position
-    cash_position = st.selectbox("Cash position:", ["None", "Long", "Short"])
-    cash_amount = None
-    if cash_position != "None":
-        cash_amount = st.selectbox("Cash amount:", list(range(5, 105, 5)))
+# Top control area with shaded background
+with st.container():
+    st.markdown("""
+        <style>
+        .control-area {
+            background-color: #f0f2f6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        </style>
+        <div class="control-area">
+        """, unsafe_allow_html=True)
     
-    # Underlying position
-    underlying_position = st.selectbox("Underlying position:", ["None", "Long", "Short"])
-    underlying_quantity = None
-    if underlying_position != "None":
-        underlying_quantity = st.selectbox("Underlying quantity:", list(range(1, 4)))
+    col1, col2, col3 = st.columns(3)
     
-    st.markdown("---")
-    st.markdown("**Options:**")
-    
-    # Option positions (4 slots)
-    options = []
-    for i in range(4):
-        st.markdown(f"**Option {i+1}:**")
-        option_type = st.selectbox(f"Type {i+1}:", ["None", "Call", "Put"], key=f"type_{i}")
+    with col1:
+        # Cash position
+        cash_position = st.selectbox("Cash position:", ["None", "Long", "Short"])
+        cash_amount = None
+        if cash_position != "None":
+            cash_amount = st.selectbox("Cash amount:", list(range(5, 105, 5)))
         
-        if option_type != "None":
-            strike = st.selectbox(f"Strike {i+1}:", list(range(5, 205, 5)), key=f"strike_{i}")
-            quantity = st.selectbox(f"Quantity {i+1}:", [-3, -2, -1, 1, 2, 3], key=f"qty_{i}")
-            options.append((option_type, strike, quantity))
-        else:
-            options.append(None)
+        # Underlying position
+        underlying_position = st.selectbox("Underlying position:", ["None", "Long", "Short"])
+        underlying_quantity = None
+        if underlying_position != "None":
+            underlying_quantity = st.selectbox("Underlying quantity:", list(range(1, 4)))
+    
+    with col2:
+        # Option positions (first 2 slots)
+        options = []
+        for i in range(2):
+            option_type = st.selectbox(f"Option {i+1} Type:", ["None", "Call", "Put"], key=f"type_{i}")
+            
+            if option_type != "None":
+                strike = st.selectbox(f"Option {i+1} Strike:", list(range(5, 205, 5)), key=f"strike_{i}")
+                quantity = st.selectbox(f"Option {i+1} Quantity:", [-3, -2, -1, 1, 2, 3], key=f"qty_{i}")
+                options.append((option_type, strike, quantity))
+            else:
+                options.append(None)
+    
+    with col3:
+        # Option positions (last 2 slots)
+        for i in range(2, 4):
+            option_type = st.selectbox(f"Option {i+1} Type:", ["None", "Call", "Put"], key=f"type_{i}")
+            
+            if option_type != "None":
+                strike = st.selectbox(f"Option {i+1} Strike:", list(range(5, 205, 5)), key=f"strike_{i}")
+                quantity = st.selectbox(f"Option {i+1} Quantity:", [-3, -2, -1, 1, 2, 3], key=f"qty_{i}")
+                options.append((option_type, strike, quantity))
+            else:
+                options.append(None)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
 
 # Create portfolio
 portfolio = Option()
