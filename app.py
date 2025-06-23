@@ -54,20 +54,8 @@ class Option(list):
         )
         return fig
 
-# Top control area with shaded background
+# Top control area
 with st.container():
-    st.markdown("""
-        <style>
-        .control-area {
-            background-color: #f0f2f6;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-        </style>
-        <div class="control-area">
-        """, unsafe_allow_html=True)
-    
     col1, col2, col3 = st.columns(3)
     
     with col1:
@@ -108,7 +96,6 @@ with st.container():
             else:
                 options.append(None)
     
-    st.markdown("</div>", unsafe_allow_html=True)
 
 # Create portfolio
 portfolio = Option()
