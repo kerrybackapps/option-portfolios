@@ -15,6 +15,10 @@ RUN apt-get update && apt-get install -y nginx && rm -rf /var/lib/apt/lists/*
 COPY --from=builder /app /app
 COPY nginx.conf /etc/nginx/nginx.conf
 
+# Install Python dependencies in the final image
+COPY requirements.txt requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
 # Expose ports
 EXPOSE 80
 
